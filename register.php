@@ -49,6 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						}
 						if($sama==true){
 							$jum+=1;
+							$password = md5($password);
 							mysqli_query($koneksi, "insert into user values (".$jum.", '".$nama."','".$email."','".$username."','".$password."')");
 							echo "<script>alert('Register Success');</script>";
 							$_POST['tbNama']="";
