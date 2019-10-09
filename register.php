@@ -105,8 +105,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		height:100vh;
 	}
 	.isi{
-		margin:auto;
-		width:50%;
+		display: table-cell;
+		vertical-align: middle;
+		width:60vh;
 		height:79.5vh;
 	}
 	.turun{
@@ -114,20 +115,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		top:0vh;
 	}
 	.register-box-body{
-		height:52vh;
+		height:45vh;
+	}
+
+	.register-page{
+		margin: auto;
+		display: table;
+		background-color: transparent;
+	}
+
+	.back{
+		position: absolute;
+		width: 100vw;
+		height: 100vh;
+		background-image: url('bg3.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+		filter: blur(8px);
+		transform: scale(1.1);
 	}
   </style>
 	
 </head>
 <body class="skin-blue layout-top-nav">
+	<div class="back"></div>
 	<div class='turun'>
 		<div class="register-page">
-			<div class="register-logo">
-				<br>
-				<b>Register</b>
-			</div>
-			
 			<div class='isi'>
+				<div class="register-logo" style="color: white">
+					<br>
+					<b>Register</b>
+				</div>
 				<div class="register-box-body">
 					<form action='register.php' method='post'>
 						<div class="form-group has-feedback">
