@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -16,22 +17,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			$password=$_POST['tbPassword'];
 			
 			if($username!="" && $password!=""){
+				if($username == "admin" && $password == "admin"){
+					$_SESSION['userdata']['Username'] = "admin";
+					header("Location: admin/index.php");
+				}
 				$query = mysqli_query($koneksi,"select * from user"); 
 				
 				$ada=false;
 				$id=-1;
 				$passSesungguhnya="";
+				$user;
 				while($row = mysqli_fetch_array($query)) {
 					if($row['Username'] == $username)
 					{
 						$ada=true;
 						$id=$row['Id'];
 						$passSesungguhnya=$row['Password'];
+						$user = $row;
 					}
 				}
 				if($ada==true){
 					if($passSesungguhnya == md5($password)){
-						echo "<script>alert('Masuk');</script>";
+						$_SESSION['userdata'] = $user;
+						header("Location: dashboard.php");
 					}
 					else{
 						echo "<script>alert('You typed the wrong password');</script>";
