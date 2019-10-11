@@ -107,7 +107,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	.isi{
 		display: table-cell;
 		vertical-align: middle;
-		width:60vh;
+		width:65vh;
 		height:79.5vh;
 	}
 	.turun{
@@ -115,7 +115,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		top:0vh;
 	}
 	.register-box-body{
-		height:45vh;
+		min-height:55vh;
 	}
 
 	.register-page{
