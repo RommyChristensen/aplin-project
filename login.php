@@ -102,7 +102,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			margin: 0 auto;
 			vertical-align: middle;
 			horizontal-align: center;
-			width: 50vh;
+			width: 55vh;
 			height: 79.5vh;
 		}
 
@@ -117,7 +117,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		}
 
 		.register-box-body {
-			height: 27vh;
+			height: 40vh;
 		}
 
 		.register-page{
