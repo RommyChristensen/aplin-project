@@ -3,35 +3,21 @@
 <?php
   include "../koneksi.php";
 
-  if(isset($_POST['btnUpdate'])){
-    $query = "SELECT * FROM user WHERE Id = " . $_POST['btnUpdate'];
-    $res = mysqli_query($koneksi, $query);
-    $dtUser = $res->fetch_array();
+  if(isset($_POST['btnSubmit'])){
+      $target_dir = '../events-poster/';
+      $target_file = $target_dir . basename($_FILES['tbImgEvent']['name']);
+      $uploadOk = 1;
+      $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+      if($uploadOk == 0){
+        echo "File not uploaded";
+      }else{
+        $res = move_uploaded_file($_FILES['tbImgEvent']['tmp_name'], $target_file);
+        if(!$res){
+            echo "gagal";
+        }
+      }
   }
-
-  if(isset($_POST['btnDelete'])){
-    $id = $_POST['btnDelete'];
-    $query = "DELETE FROM user WHERE Id = $id";
-    mysqli_query($koneksi, $query);
-  }
-
-  if(isset($_POST['btnLogout'])){
-    session_destroy();
-    header("Location: ../login.php");
-  }
-
-  if(isset($_POST['btnUpdateData'])){
-    $id = $_POST['tbIdUser'];
-    $un = $_POST['tbUsername'];
-    $nm = $_POST['tbNama'];
-    $em = $_POST['tbEmail'];
-
-    $query = "UPDATE user SET Nama = '$nm', Email = '$em', Username = '$un' WHERE Id = $id";
-    $res = mysqli_query($koneksi, $query);
-  }
-
-  $query = "SELECT * FROM user";
-  $data = mysqli_query($koneksi, $query);
 ?>
 
 <!DOCTYPE html>
@@ -240,19 +226,6 @@ desired effect
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    foreach($data as $key=>$value){
-                                        echo "<tr>";
-                                        echo "<td>".$value['Id']."</td>";
-                                        echo "<td>".$value['Nama']."</td>";
-                                        echo "<td>".$value['Email']."</td>";
-                                        echo "<td>".$value['Username']."</td>";
-                                        echo "<td>".$value['Password']."</td>";
-                                        echo "<td><button id='btnEdit' type='submit' name='btnUpdate' value='".$value['Id']."' class='btn btn-warning'><span class='fa fa-edit'></span></button>
-                                        <button id='btnDelete' type='submit' name='btnDelete' value='".$value['Id']."' class='btn btn-danger'><span class='fa fa-trash'></span></button></td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
