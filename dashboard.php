@@ -170,8 +170,8 @@ desired effect
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">Himpunan Mahasiswa (Hima)</a></li>
                 <li><a href="#">Unit Kegiatan Mahasiswa (UKM)</a></li>
-                <li><a href="#">Unit Kegiatan Kerohanian (UKK)</a></li>
-                <li><a href="#">Badan Eksekutif Mahasiswa (BEM)</a></li>
+                <li><a href="ukk.html">Unit Kegiatan Kerohanian (UKK)</a></li>
+                <li><a href="bem.html">Badan Eksekutif Mahasiswa (BEM)</a></li>
               </ul>
             </li>
             <li><a href="#">Akademik</a></li>
