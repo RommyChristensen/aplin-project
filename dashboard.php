@@ -168,7 +168,7 @@ desired effect
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Aktivitas Mahasiswa <i class="caret"></i></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Himpunan Mahasiswa (Hima)</a></li>
+                <li><a href="hima.html">Himpunan Mahasiswa (Hima)</a></li>
                 <li><a href="#">Unit Kegiatan Mahasiswa (UKM)</a></li>
                 <li><a href="ukk.html">Unit Kegiatan Kerohanian (UKK)</a></li>
                 <li><a href="bem.html">Badan Eksekutif Mahasiswa (BEM)</a></li>
