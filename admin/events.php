@@ -17,7 +17,49 @@
             echo "gagal";
         }
       }
+
+      $ejudul = $_POST['tbNamaEvent'];
+      $edeskripsi = $_POST['tbDescEvent'];
+      $edate = $_POST['tbDateEvent'];
+      $elokasi = $_POST['tbLokasiEvent'];
+      $eTag = $_POST['tbEventTag'];
+      $eposter = basename($_FILES['tbImgEvent']['name']);
+
+      $query = "INSERT INTO event (`event_judul`, `event_tgl`, `event_desc`, `event_lokasi`, `event_img`, `event_tags`) VALUES ('$ejudul', '$edate', '$edeskripsi', '$elokasi', '$eposter', '$eTag')";
+      $res = mysqli_query($koneksi, $query);
+
+      if($res){
+        $alert = true;
+      }
   }
+
+  if(isset($_POST['btnEdit'])){
+      $id = $_POST['btnEdit'];
+      $query = "SELECT * FROM event WHERE event_id = " . $id;
+      $edit = mysqli_query($koneksi, $query)->fetch_array(); 
+  }
+
+  if(isset($_POST['btnSubmitEdit'])){
+    $id = $_POST['tbIdEvent'];
+    $ejudul = $_POST['tbNamaEvent'];
+    $edeskripsi = $_POST['tbDescEvent'];
+    $edate = $_POST['tbDateEvent'];
+    $elokasi = $_POST['tbLokasiEvent'];
+    $eTag = $_POST['tbEventTag'];
+
+    $query = "UPDATE event SET event_judul='$ejudul', event_desc='$edeskripsi', event_tgl='$edate', event_lokasi='$elokasi', event_tags='$etag' WHERE event_id = '$id'";
+    $res = mysqli_query($koneksi, $query);
+    echo mysqli_error($koneksi);
+  }
+
+  if(isset($_POST['btnDelete'])){
+      $id = $_POST['btnDelete'];
+      $query = "DELETE FROM event WHERE event_id = '$id'";
+      mysqli_query($koneksi, $query);
+  }
+
+  $query = "SELECT * FROM event";
+  $data = mysqli_query($koneksi, $query);
 ?>
 
 <!DOCTYPE html>
@@ -202,7 +244,25 @@ desired effect
 
             <!-- Main content -->
             <section class="content container-fluid">
-
+                <?php 
+                    if(isset($alert) && $alert){
+                ?>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Success!</h4>
+                        Insert Event Berhasil!
+                    </div>
+                <?php
+                    } elseif(isset($alert) && !$alert){
+                ?>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i> Failed!</h4>
+                        Insert Event Failed!
+                    </div>
+                <?php
+                    }
+                ?>
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         List Events
@@ -218,21 +278,45 @@ desired effect
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>Username</th>
-                                        <th>Password</th>
+                                        <th>Nama Event</th>
+                                        <th>Deskripsi Event</th>
+                                        <th>Tanggal Event</th>
+                                        <th>Lokasi</th>
+                                        <th>Poster</th>
+                                        <th>Tag</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php
+                                    foreach($data as $key => $value){
+                                ?>
+                                    <tr>
+                                        <td><?= $value['event_id']; ?></td>
+                                        <td><?= $value['event_judul']; ?></td>
+                                        <td><?= $value['event_desc']; ?></td>
+                                        <td><?= $value['event_tgl']; ?></td>
+                                        <td><?= $value['event_lokasi']; ?></td>
+                                        <td><?= $value['event_img']; ?></td>
+                                        <td><?= $value['event_tags']; ?></td>
+                                        <td>
+                                            <button type="submit" value="<?= $value['event_id']; ?>" name="btnEdit" class="btn btn-warning btn-flat"><i class="fa fa-edit"></i></button>
+                                            <button type="submit" value="<?= $value['event_id']; ?>" name="btnDelete" class="btn btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    }
+                                ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>Username</th>
-                                        <th>Password</th>
+                                        <th>Id</th>
+                                        <th>Nama Event</th>
+                                        <th>Deskripsi Event</th>
+                                        <th>Tanggal Event</th>
+                                        <th>Lokasi</th>
+                                        <th>Poster</th>
+                                        <th>Tag</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -252,55 +336,134 @@ desired effect
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
-                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                     <div class="box-body">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Judul Event</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="tbNamaEvent" class="form-control" />
+                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Judul Event</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="tbNamaEvent" class="form-control" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Deskripsi Event</label>
-                            <div class="col-sm-10">
-                                <textarea name="tbDescEvent" class="form-control"></textarea>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Deskripsi Event</label>
+                                <div class="col-sm-10">
+                                    <textarea name="tbDescEvent" class="form-control"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Date</label>
-                            <div class="col-sm-10">
-                                <div class="input-group date" data-provide="datepicker">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Date</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group date" data-provide="datepicker">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input name="tbDateEvent" type="text" class="form-control" id="datepicker">
                                     </div>
-                                    <input type="text" class="form-control" id="datepicker">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Lokasi Event</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-map-marker"></i>
+                                        </div>
+                                        <input type="text" name="tbLokasiEvent" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Event Tag</label>
+                                <div class="col-sm-10">
+                                    <textarea name="tbEventTag" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Poster</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="tbImgEvent" class="form-control" />
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Lokasi Event</label>
-                            <div class="col-sm-10">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-map-marker"></i>
+                        <div class="box-footer">
+                            <div class="text-center">
+                                <button type="submit" name="btnSubmit" class="btn btn-flat btn-info">Submit
+                                    Event</button>
+                                <button type="submit" name="btnCancel" class="btn btn-flat btn-danger">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="formEditEvent" class="box box-warning <?php if(!isset($edit)) echo 'form-hidden'; ?>">
+                    <div class="box-header with-border">
+                        Edit Event
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly="true" value='<?php if(isset($edit)) echo $edit['event_id']; ?>' name="tbIdEvent" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Judul Event</label>
+                                <div class="col-sm-10">
+                                    <input type="text" value='<?php if(isset($edit)) echo $edit['event_judul']; ?>' name="tbNamaEvent" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Deskripsi Event</label>
+                                <div class="col-sm-10">
+                                    <textarea name="tbDescEvent" class="form-control"><?php if(isset($edit)) echo $edit['event_desc']; ?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Date</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group date" data-provide="datepicker">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input name="tbDateEvent" value='<?php if(isset($edit)) echo $edit['event_tgl']; ?>' type="text" class="form-control" id="datepicker">
                                     </div>
-                                    <input type="text" name="tbLokasiEvent" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Lokasi Event</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-map-marker"></i>
+                                        </div>
+                                        <input type="text" value='<?php if(isset($edit)) echo $edit['event_lokasi']; ?>' name="tbLokasiEvent" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Event Tag</label>
+                                <div class="col-sm-10">
+                                    <textarea name="tbEventTag" class="form-control"><?php if(isset($edit)) echo $edit['event_tags']; ?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Poster</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="tbImgEvent" class="form-control" />
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Poster</label>
-                            <div class="col-sm-10">
-                                <input type="file" name="tbImgEvent" class="form-control" />
+                        <div class="box-footer">
+                            <div class="text-center">
+                                <button type="submit" name="btnSubmitEdit" class="btn btn-flat btn-warning">Submit
+                                    Event</button>
+                                <button type="submit" name="btnCancelEdit" class="btn btn-flat btn-danger">Cancel</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="box-footer">
-                        <div class="text-center">
-                            <button type="submit" name="btnSubmit" class="btn btn-flat btn-info">Submit Event</button>
-                            <button type="submit" name="btnCancel" class="btn btn-flat btn-danger">Cancel</button>
-                        </div>
-                    </div>
                     </form>
                 </div>
 
@@ -330,14 +493,14 @@ desired effect
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- REQUIRED JS SCRIPTS -->
     <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    
-    
+
+
     <!-- AdminLTE App -->
     <script src="../dist/js/adminlte.min.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
-    
+
 
 
 
@@ -346,7 +509,7 @@ desired effect
             $('#example').DataTable();
             $('.datepicker').datepicker();
 
-            $("#btnShowAddForm").click(function(){
+            $("#btnShowAddForm").click(function () {
                 $('#formAddEvent').removeClass("form-hidden");
             });
         });
