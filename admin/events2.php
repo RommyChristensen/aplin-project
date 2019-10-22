@@ -3,6 +3,9 @@
 <?php
   $koneksi = mysqli_connect("localhost","root","mysql","sttsedunew"); 
 
+//   $q = "UPDATE agenda_bahasa SET agenda_deskripsi = REGEXP_REPLACE(agenda_deskripsi, '<img.+?//>', '')";
+//   mysqli_query($koneksi, $q);
+
   if(isset($_POST['btnSubmit'])){
       $target_dir = '../events-poster/';
       $target_file = $target_dir . basename($_FILES['tbImgEvent']['name']);
